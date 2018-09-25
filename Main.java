@@ -43,7 +43,7 @@ public class Main {
 			}
 			nextChar(in);
 		}
-		//System.out.printf("the set is  %s \n", set.toString());
+		System.out.printf("the set is  %s \n", set.toString());
 		in.close();
 
 	}
