@@ -37,15 +37,27 @@ public class Main {
 	static void readFile(String s, Set set, Map<String, Integer> occurence) throws Exception {
 		Scanner in = new Scanner(new File(s));
 		in.useDelimiter("");
+		char prev = 'c';
 		while(in.hasNext()) {
 			if(nextCharIsLetter(in)) {
-				addIdentifer(in, set, occurence);
+				if(Character.isDigit(prev)) {
+					skipString(in);
+				} else {
+					addIdentifer(in, set, occurence);
+				}
+				
 			}
-			nextChar(in);
+			prev = nextChar(in);
 		}
 		System.out.printf("the set is  %s \n", set.toString());
 		in.close();
 
+	}
+
+	static void skipString(Scanner in) {
+		while(nextCharIsAlpha(in)) {
+			System.out.printf("skipped char %c \n", nextChar(in));
+		}
 	}
 	
 	static void addIdentifer(Scanner in, Set set, Map<String, Integer> occurence) {
