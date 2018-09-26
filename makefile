@@ -9,7 +9,9 @@ CLASSES = \
 	Set.java \
 	Identifier.java \
 	SetInterface.java \
-	IdentInterface.java 
+	IdentInterface.java \
+	BinaryTreeInterface.java\
+	BinaryTree.java
 
 
 default: classes
