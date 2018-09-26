@@ -1,3 +1,5 @@
 What happens if we have to similar identifiers in the same set?
 What happens if we have several spaces between identifiers?
 Do we need to override equals and toString functions in both ADTs?
+
+comparable interface

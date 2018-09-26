@@ -43,4 +43,8 @@ public class Identifier implements IdentInterface{
 	public String toString() {
 		return element.toString();
 	}
+
+	public int hashCode() {
+		return element.toString().hashCode();
+	}
 }

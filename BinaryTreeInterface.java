@@ -1,4 +1,5 @@
-public interface BinaryTreeInterface<E> {
+import java.util.Iterator;
+public interface BinaryTreeInterface<E extends Comparable<E>> {
   /*
   Elements    : Elements of type E
   Structure   : Binary tree
@@ -38,20 +39,20 @@ public interface BinaryTreeInterface<E> {
   A copy of the element is returned if it exists. Otherwise null is returned.
   */
 
-  public E successor(E element);
+  public E Successor(E element);
   /*
   @postcondition
   the node with the smallest key greater than the key of input node is returned. 
   Inorder Successor is NULL for the last node in Inoorder traversal.
   */
 
-  public E predecessor(E element);
+  public E Predecessor(E element);
   /*
   @postcondition
   the node with the greatest key smaller than the key of input node is returned. 
   Inorder predecessor is NULL for the last node in Inoorder traversal.
   */
-
+/*
   public Iterator<E> ascendingIterator();
   /**
   @postcondition
@@ -61,7 +62,7 @@ public interface BinaryTreeInterface<E> {
   This object of the type Iterator<E> was subsequently
   returned.
   **/
-
+/*
   public Iterator<E> descendingIterator();
   /**
   @postcondition
