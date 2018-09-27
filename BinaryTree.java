@@ -20,13 +20,16 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 			this.data = d;
 		}
 	    	public Node(Node r, Node l, Node p, E k) {
-		      this.left = l;
-		      this.right = r; 
-		      this.parent = p;
-		      this.data = k;
+			this.left = l;
+		      	this.right = r; 
+		      	this.parent = p;
+		      	this.data = k;
 	    	}
 	    	public Node(Node copyNode) {
-	      		this(copyNode.left, copyNode.right, copyNode.parent, copyNode.data);
+	      		this.left = copyNode.left;
+		      	this.right = copyNode.right; 
+		      	this.parent = copyNode.parent;
+		      	this.data = copyNode.data;
 	    	}
 	    
 	    	public int compareTo(E otherData) {
@@ -98,14 +101,11 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 				return null;
 			}
 			Node temp = new Node(next);
+			
 			next = Successor(temp) == null ? null : new Node(Successor(temp));
 			return temp.data;
 		}
 
-    		@Override
-    		public void remove() {
-        		//..
-    		}
   	};
 
   	private Node root;
@@ -205,22 +205,23 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
   	}
 
 	public Node Successor(Node origin) {
-		if(origin == null) {
-	 		return null;
-		}
-		if(origin.right != null) {
-			return treeMinimum(origin.right);
-		}
-		Node temp = origin.parent;
-		while(temp != null && origin == temp.right ) {
-			origin = temp;
-			temp = temp.parent;
-			if(temp.right == null) {
-		 		return temp;
+			if(origin == null) {
+		 		return null;
 			}
+			if(origin.right != null) {
+				return treeMinimum(origin.right);
+			}
+			Node temp = origin.parent;
+			if(temp.right == null) return temp;
+			while(temp != null && origin.data.equals(temp.right.data)) {
+				origin = temp;
+				temp = temp.parent;
+				if(temp == null || temp.right == null) {
+			 		return temp;
+				}
+			}
+			return temp;
 		}
-		return temp;
-	}
   /*
   @postcondition
   the node with the smallest key greater than the key of input node is returned. 
