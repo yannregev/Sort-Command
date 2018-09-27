@@ -142,9 +142,7 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 	public void add(E element) {
 		if (root == null) {
 			root = new Node(element);
-			System.out.println(" added root ");
 		} else {
-			System.out.println(" adding other nodes ");
 			root.insert(root, element);
 		}
 	}
