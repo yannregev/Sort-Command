@@ -3,8 +3,9 @@ import java.io.*;
 import java.util.regex.Pattern;
 
 public class Main {
-	static final int SET_SIZE = 100;
+	static final int SET_SIZE = 100, NUMBER_OF_FILES = 2;
 	static PrintStream out;
+	boolean caseInsensitive = false, descending = false;
 
 	boolean startsWithLetter(String s) {
 		return Character.isLetter(s.charAt(0));
@@ -15,6 +16,9 @@ public class Main {
 		Scanner in = new Scanner(new File(s));
 		while (in.hasNextLine()) {
 			String input = in.nextLine();
+			if (caseInsensitive) {
+				input = input.toLowerCase();
+			}
 			String[] parsedInput = input.split("[^a-zA-Z0-9]+");
 			for (int i = 0; i < parsedInput.length; i++) {
 				if (startsWithLetter(parsedInput[i])) {
@@ -39,7 +43,12 @@ public class Main {
 				tree.add(s);
 			}
 		}
-		Iterator<String> meIter = tree.ascendingIterator();
+		Iterator<String> meIter;
+		if (!descending) {
+			meIter = tree.ascendingIterator();
+		} else {
+			meIter = tree.descendingIterator();
+		}
 		while (meIter.hasNext()) {
 			out.printf("%s\n",meIter.next());
 		}
@@ -49,14 +58,42 @@ public class Main {
 	void start(String[] args) throws Exception {
 		Set set1 = new Set(SET_SIZE);
 		Set set2 = new Set(SET_SIZE);
+
+		Vector<String> files = new Vector<String>();
+
 		out = new PrintStream(System.out);
-		if(args.length < 2) {
+
+
+
+		for (int i = 0; i < args.length; i++) {
+			
+			switch(args[i]) {
+				case "-i":
+					caseInsensitive = true;
+					break;
+				case "-d":
+					descending = true;
+					break;
+				default:
+					files.add(args[i]);
+					break;
+			}
+		}
+
+		if(files.size() != NUMBER_OF_FILES) {
 			out.println("Usage: java Main -args file1 file2");
 			return;
 		}
+		for (int i = 0; i < NUMBER_OF_FILES; i++) {
+			File file = new File(files.get(i));
+			if (!file.exists()) {
+				out.println(files.get(i) + " no such file");
+				return;
+			}
+		}
 		Map<String, Integer> occurence = new HashMap<String, Integer>();
-		readFile(args[0], set1, occurence);
-		readFile(args[1], set2, occurence);
+		readFile(files.get(0), set1, occurence);
+		readFile(files.get(1), set2, occurence);
 		sortAndPrint(occurence);
 
 	}

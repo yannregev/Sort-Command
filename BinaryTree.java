@@ -84,10 +84,12 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 	};
 
   	private class BSTIterator implements Iterator<E> {
+		boolean descending;
     		Node startNode;
     		Node next;
-    		public BSTIterator(Node position) {
-      			next = startNode = new Node(position);
+    		public BSTIterator(Node position,boolean desc) {
+      			this.next = startNode = new Node(position);
+			this.descending = desc;
     		}
 
     		@Override
@@ -97,13 +99,23 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 
     		@Override
 		public E next() {
-			if (!hasNext()) {
-				return null;
+			if (!descending) {
+				if (!hasNext()) {
+					return null;
+				}
+				Node temp = new Node(next);
+				
+				this.next = Successor(temp) == null ? null : new Node(Successor(temp));
+				return temp.data;
+			} else {
+				if (!hasNext()) {
+					return null;
+				}
+				Node temp = new Node(next);
+				
+				this.next = Predecessor(temp) == null ? null : new Node(Predecessor(temp));
+				return temp.data;
 			}
-			Node temp = new Node(next);
-			
-			next = Successor(temp) == null ? null : new Node(Successor(temp));
-			return temp.data;
 		}
 
   	};
@@ -212,8 +224,10 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 				return treeMinimum(origin.right);
 			}
 			Node temp = origin.parent;
-			if(temp.right == null) return temp;
-			while(temp != null && origin.data.equals(temp.right.data)) {
+			if(temp == null || temp.right == null) {
+			 	return temp;
+			}
+			while(origin.data.equals(temp.right.data)) {
 				origin = temp;
 				temp = temp.parent;
 				if(temp == null || temp.right == null) {
@@ -232,9 +246,15 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 			return treeMaximum(origin.left);
 		}
 		Node temp = origin.parent;
-		while (temp != null && origin == temp.left) {
+		if (temp == null || temp.left == null) {
+			return temp;
+		}
+		while (origin.data.equals(temp.left.data)) {
 			origin = temp;
 			temp = temp.parent;
+			if (temp == null || temp.left == null) {
+				return temp;
+			}
 		}
 	    	return temp;
 	}
@@ -244,7 +264,7 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
   Inorder predecessor is NULL for the last node in Inoorder traversal.
   */
   	public Iterator<E> ascendingIterator() {
-   		return new BSTIterator(treeMinimum(root));
+   		return new BSTIterator(treeMinimum(root), false);
   	}
   /**
   @postcondition
@@ -254,9 +274,9 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
   This object of the type Iterator<E> was subsequently
   returned.
   **/
-/*
+
   public Iterator<E> descendingIterator() {
-    return this.root;
+    	return new BSTIterator(treeMaximum(root), true);
   }
   /**
   @postcondition
