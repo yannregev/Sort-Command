@@ -45,8 +45,14 @@ public class Main {
 			String input = in.nextLine();
 			String[] parsedInput = input.split("[^a-zA-Z0-9]+");
 			for (int i = 0; i < parsedInput.length; i++) {
-				if (startsWithLetter(parsedInput[i]))
+				if (startsWithLetter(parsedInput[i])) {
 					set.append(new Identifier(new StringBuffer(parsedInput[i])));
+					if(occurence.get(parsedInput[i]) == null) {
+						occurence.put(parsedInput[i], 0);
+					}
+					int apearences = occurence.get(parsedInput[i]);
+					occurence.put(parsedInput[i], apearences + 1);
+				}
 			}
 		}
 		System.out.printf("the set is  %s \n", set.toString());
@@ -69,13 +75,17 @@ public class Main {
 	}
 
 	void sortAndPrint(Map<String, Integer> occurence) {
-		SortedSet<String> keys = new TreeSet<>(occurence.keySet());
-		for (String key : keys) { 
-			int value = occurence.get(key);
-			if((value % 2) != 0) {
-				System.out.printf("%s \n", key);
+		BinaryTree<String> tree = new BinaryTree<String>();
+		for (String s : occurence.keySet()) {
+			if((occurence.get(s) % 2) != 0) {
+				tree.add(s);
 			}
 		}
+		Iterator<String> meIter = tree.ascendingIterator();
+		for(int i = 0; i < 4; i++) {
+			System.out.println(meIter.next());
+		}
+
 	}
 
 	void start(String[] args) throws Exception {

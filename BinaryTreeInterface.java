@@ -39,20 +39,6 @@ public interface BinaryTreeInterface<E extends Comparable<E>> {
   A copy of the element is returned if it exists. Otherwise null is returned.
   */
 
-  public E Successor(E element);
-  /*
-  @postcondition
-  the node with the smallest key greater than the key of input node is returned. 
-  Inorder Successor is NULL for the last node in Inoorder traversal.
-  */
-
-  public E Predecessor(E element);
-  /*
-  @postcondition
-  the node with the greatest key smaller than the key of input node is returned. 
-  Inorder predecessor is NULL for the last node in Inoorder traversal.
-  */
-/*
   public Iterator<E> ascendingIterator();
   /**
   @postcondition

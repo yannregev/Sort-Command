@@ -1,4 +1,5 @@
 import java.util.Iterator;
+import java.lang.reflect.Constructor;
 
 public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<E> {
 
@@ -76,6 +77,32 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 			}
 		}
   }
+  private class BSTIterator implements Iterator<E> {
+    Node startNode;
+    Node next;
+    public BSTIterator(Node position) {
+      startNode = new Node(position);
+      next = startNode;
+    }
+
+    @Override
+    public boolean hasNext() {
+        // ...
+        return true;
+    }
+
+    @Override
+    public E next() {
+      Node temp = new Node(next);
+      next = new Node(Successor(temp));
+      return temp.data;
+    }
+
+    @Override
+    public void remove() {
+        //..
+    }
+  };
 
   private Node root;
 
@@ -140,31 +167,74 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
   */
 
   public E get(E element) {
-    return element;
+    try {
+			Class<?> clazz = element.getClass();
+			Constructor<?> copyConst = clazz.getConstructor(clazz);
+			if (clazz != null) {
+				@SuppressWarnings("unchecked")
+				E temp = (E) copyConst.newInstance(element);
+				return temp;
+			}
+		} catch (Exception e) {
+			return null;
+		}
+		return null;
   }
   /*
   @postcondition
   A copy of the element is returned if it exists. Otherwise null is returned.
   */
-  public E Successor(E element) {
+
+  public Node treeMaximum(Node element) {
+    while(element.right != null) {
+        element = element.right;
+    }
     return element;
+  }
+
+  public Node treeMinimum(Node element) {
+    while(element.left != null) {
+        element = element.left;
+    }
+    return element;
+  }
+
+  public Node Successor(Node origin) {
+    if(origin == null) return null;
+    if(origin.right != null) {
+        return treeMinimum(origin.right);
+    }
+    Node temp = origin.parent;
+    while(temp != null && origin == temp.right ) {
+      origin = temp;
+      temp = temp.parent;
+      if(temp.right == null) return temp;
+    }
+    return temp;
   }
   /*
   @postcondition
   the node with the smallest key greater than the key of input node is returned. 
   Inorder Successor is NULL for the last node in Inoorder traversal.
   */
-  public E Predecessor(E element) {
-    return element;
-  }
+  public Node Predecessor(Node origin) {
+		if (origin.left != null) {
+			return treeMaximum(origin.left);
+		}
+		Node temp = origin.parent;
+		while (temp != null && origin == temp.left) {
+			origin = temp;
+			temp = temp.parent;
+		}
+	    	return temp;
+	  }
   /*
   @postcondition
   the node with the greatest key smaller than the key of input node is returned. 
   Inorder predecessor is NULL for the last node in Inoorder traversal.
   */
-  /*
   public Iterator<E> ascendingIterator() {
-    return this.root;
+    return new BSTIterator(treeMinimum(root));
   }
   /**
   @postcondition
