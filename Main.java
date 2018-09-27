@@ -40,7 +40,7 @@ public class Main {
 			}
 		}
 		Iterator<String> meIter = tree.ascendingIterator();
-		for(int i = 0; i < 4; i++) {
+		while (meIter.hasNext()) {
 			out.printf("%s\n",meIter.next());
 		}
 
