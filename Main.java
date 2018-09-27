@@ -79,6 +79,16 @@ public class Main {
 	}
 
 	void start(String[] args) throws Exception {
+		BinaryTree<Double> t = new BinaryTree<Double>();
+		t.add(2.0);
+		t.add(1.0);
+		t.add(3.0);
+		t.add(6.0);
+		t.add(9.0);
+		t.printTree();
+		t.remove(2.0);
+		t.remove(3.0);
+		t.printTree();
 		Set set1 = new Set(SET_SIZE);
 		Set set2 = new Set(SET_SIZE);
 		if(args.length < 2) {

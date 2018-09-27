@@ -21,7 +21,7 @@ public interface BinaryTreeInterface<E extends Comparable<E>> {
     POST- the tree is reset and all the nodes are removed.
 
   */
-  public void insert(E element);
+  public void add(E element);
   /*
   @postcondition
   A copy of the input node is added to the tree.

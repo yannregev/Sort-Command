@@ -2,32 +2,82 @@ import java.util.Iterator;
 
 public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<E> {
 
-  private class Node<E extends Comparable<E>> {
-    private Node<E> left;
-    private Node<E> right;
-    private Node<E> parent;
+  private class Node {
+    private Node left;
+    private Node right;
+    private Node parent;
     private E data;
-    public Node(E d) {
-      this(null, null, null, d);
+    public Node() {
+      this(null, null, null, null);
     }
-    public Node(Node<E> r, Node<E> l, Node<E> p, E k) {
+    public Node(E d) {
+      this.left = null;
+      this.right = null; 
+      this.parent = null;
+      this.data = d;
+    }
+    public Node(Node r, Node l, Node p, E k) {
       this.left = l;
       this.right = r; 
       this.parent = p;
       this.data = k;
     }
-    public Node(Node<E> copyNode) {
-      this.left = copyNode.left;
-      this.right = copyNode.right; 
-      this.parent = copyNode.parent;
-      this.data = copyNode.data;
+    public Node(Node copyNode) {
+      this(copyNode.left, copyNode.right, copyNode.parent, copyNode.data);
     }
+    
     public int compareTo(E otherData) {
       return this.data.compareTo(otherData);
     } 
+
+    public void remove(Node parent, E element) {
+			int compare = data.compareTo(element);
+			if (compare > 0) {
+				if (left != null) {
+					left.remove(this, element);				
+				}
+			} else if (compare < 0) {
+				if (right != null) {
+					right.remove(this, element);
+				}
+			} else {
+				if (left != null && right != null) {
+					this.data = right.minData();
+					right.remove(this, this.data);
+				} else if (parent.left == this) {
+					parent.left = (left != null) ? left : right;
+				} else if (parent.right == this) {
+					parent.right = (left != null) ? left : right;
+				}
+			}
+    }
+    
+    public void insert(Node p, E element) {
+			if (data.compareTo(element) < 0) {
+				if (this.right == null) {
+          this.right = new Node(null, null, p, element);
+				} else {
+					right.insert(right ,element);
+				}
+			} else {
+				if (this.left == null) {
+          this.left = new Node(null, null, p, element);
+				} else {
+					left.insert(left, element);
+				}
+			} 
+    }
+    
+    public E minData() {
+			if (left == null) {
+				return data;
+			} else {
+				return left.minData();
+			}
+		}
   }
 
-  private Node<E> root;
+  private Node root;
 
   public BinaryTree() {
     root = null;
@@ -36,8 +86,8 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
     copyTree(root, tree.root);
   }
 
-  private void copyTree(Node<E> root, Node<E> other) {
-    root = new Node<E>(other);
+  private void copyTree(Node root, Node other) {
+    root = new Node(other);
     if(other.left != null) {
       copyTree(root.left, other.left);
     }
@@ -46,30 +96,44 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
     }
   }
 
-  public void insert(E element) {
-    insertRec(root, element);
-  }
-
-  private void insertRec(Node<E> n, E element) {
-    if(n == null) {
-      n = new Node<E>(element);
-    }
-    if(n.compareTo(element) > 0) {
-      insertRec(n.left, element);
-    }
-    if(n.compareTo(element) <= 0) {
-      insertRec(n.right, element);
+	public void add(E element) {
+    if (root == null) {
+      root = new Node(element);
+      System.out.println(" added root ");
+    } else {
+      System.out.println(" adding other nodes ");
+      root.insert(root, element);
     }
   }
 
+  public void printTree() {
+    inorderTreeWalk(root);
+  }
+  private void inorderTreeWalk(Node x) {
+    if(x != null) {
+        inorderTreeWalk(x.left);
+        System.out.println(x.data);
+        inorderTreeWalk(x.right);
+    }
+}
   /*
   @postcondition
   A copy of the input node is added to the tree.
   */
 
-  public void remove(E element) {
-
-  }
+ 	public void remove(E element) {
+		if (root == null) {
+			return;
+		}
+		if (root.data == element) {
+			Node temp = new Node();
+			temp.left = root;
+			root.remove(temp, element);
+			root = temp.left;
+		} else {
+			root.remove(null, element);
+		}
+	}
   /*
   @postcondition
   The node with the input element is removed.
