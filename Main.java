@@ -31,19 +31,18 @@ public class Main {
 				}
 			}
 		}
-		out.printf("the set is  %s \n", set.toString());
 		in.close();
 
 	}
 
 	void sortAndPrint(Map<String, Integer> occurence) {
-		BinaryTree<String> tree = new BinaryTree<String>();
+		BinaryTree<Identifier> tree = new BinaryTree<Identifier>();
 		for (String s : occurence.keySet()) {
 			if((occurence.get(s) % 2) != 0) {
-				tree.add(s);
+				tree.add(new Identifier(new StringBuffer(s)));
 			}
 		}
-		Iterator<String> meIter;
+		Iterator<Identifier> meIter;
 		if (!descending) {
 			meIter = tree.ascendingIterator();
 		} else {

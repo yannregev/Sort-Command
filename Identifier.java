@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Identifier implements IdentInterface{
+public class Identifier implements IdentInterface, Comparable<Identifier>{
 	private StringBuffer element;
 	public Identifier(char c) {
 		this.element = new StringBuffer();
@@ -46,5 +46,9 @@ public class Identifier implements IdentInterface{
 
 	public int hashCode() {
 		return element.toString().hashCode();
+	}
+
+	public int compareTo(Identifier rhs) {
+		return (this.element.toString().compareTo(rhs.element.toString()));
 	}
 }
