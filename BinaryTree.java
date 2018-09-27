@@ -98,7 +98,7 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 				return null;
 			}
 			Node temp = new Node(next);
-			next = new Node(Successor(temp));
+			next = Successor(temp) == null ? null : new Node(Successor(temp));
 			return temp.data;
 		}
 
