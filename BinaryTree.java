@@ -89,12 +89,12 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 
     		@Override
     		public boolean hasNext() {
-        		return (next != null)
+        		return (next != null);
     		}
 
     		@Override
 		public E next() {
-			if (!hasNext) {
+			if (!hasNext()) {
 				return null;
 			}
 			Node temp = new Node(next);
@@ -183,7 +183,7 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 		} catch (Exception e) {
 			return null;
 		}
-			return null;
+		return null;
 	}
   /*
   @postcondition
