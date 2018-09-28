@@ -1,15 +1,18 @@
 public class Set implements SetInterface {
 	private final static int DEFAULT_MAX_SIZE = 20;
+	int maxSize;
     	private Identifier[] identifiers;
 	private int size;
 
     	public Set() {
         	this.identifiers = new Identifier[DEFAULT_MAX_SIZE];
+		this.maxSize = DEFAULT_MAX_SIZE;
         	this.size = 0;
     	}
 
 	public Set(int size) {
 		this.identifiers = new Identifier[size];
+		this.maxSize = size;
        		this.size = 0;
 	}
 
@@ -33,8 +36,21 @@ public class Set implements SetInterface {
 
 	public void append(Identifier i) {
 		if (!this.contains(i)) {
+			if (size >= maxSize) {
+				increaseSetSize();
+			}
 			this.identifiers[this.size++] = new Identifier(i);
 		}
+	}
+	
+	private void increaseSetSize() {
+		maxSize *= 2;
+		Identifier[] temp = new Identifier[maxSize];
+		//copy loop
+		for (int i = 0; i < size; i++) {
+			temp[i] = identifiers[i];
+		}
+		identifiers = temp;
 	}
 
 	public Set intersection(Set s) {

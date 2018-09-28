@@ -3,7 +3,7 @@ import java.io.*;
 import java.util.regex.Pattern;
 
 public class Main {
-	static final int SET_SIZE = 100, NUMBER_OF_FILES = 2;
+	static final int SET_SIZE = 2, NUMBER_OF_FILES = 2;
 	static PrintStream out;
 	boolean caseInsensitive = false, descending = false;
 
@@ -16,10 +16,12 @@ public class Main {
 		Scanner in = new Scanner(new File(s));
 		while (in.hasNextLine()) {
 			String input = in.nextLine();
+			input = input.replaceAll("[^a-zA-Z0-9]+", " ");
+			input = input.replaceAll("\\s+|\\s+$", " ");
 			if (caseInsensitive) {
 				input = input.toLowerCase();
 			}
-			String[] parsedInput = input.split("[^a-zA-Z0-9]+");
+			String[] parsedInput = input.split(" ");
 			for (int i = 0; i < parsedInput.length; i++) {
 				if (startsWithLetter(parsedInput[i])) {
 					set.append(new Identifier(new StringBuffer(parsedInput[i])));
@@ -55,9 +57,7 @@ public class Main {
 	}
 
 	void start(String[] args) throws Exception {
-		Set set1 = new Set(SET_SIZE);
-		Set set2 = new Set(SET_SIZE);
-
+		Vector<Set> sets = new Vector<Set>();
 		Vector<String> files = new Vector<String>();
 
 		out = new PrintStream(System.out);
@@ -89,10 +89,12 @@ public class Main {
 				out.println(files.get(i) + " no such file");
 				return;
 			}
+			sets.add(new Set());
 		}
 		Map<String, Integer> occurence = new HashMap<String, Integer>();
-		readFile(files.get(0), set1, occurence);
-		readFile(files.get(1), set2, occurence);
+		for (int i = 0; i < NUMBER_OF_FILES; i++) {
+			readFile(files.get(i), sets.get(i), occurence);
+		}
 		sortAndPrint(occurence);
 
 	}
