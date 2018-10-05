@@ -33,6 +33,7 @@ public class Main {
 				}
 			}
 		}
+		//out.println("The set is " + set);
 		in.close();
 
 	}
