@@ -39,7 +39,7 @@ public class Main {
 	}
 
 	void sortAndPrint(Map<String, Integer> occurence) {
-		BinaryTree<Identifier> tree = new BinaryTree<Identifier>();
+		BinaryTreeInterface<Identifier> tree = new BinaryTree<Identifier>();
 		for (String s : occurence.keySet()) {
 			if((occurence.get(s) % 2) != 0) {
 				tree.add(new Identifier(new StringBuffer(s)));

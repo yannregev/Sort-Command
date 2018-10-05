@@ -139,12 +139,13 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
     		}
   	}
 
-	public void add(E element) {
+	public BinaryTreeInterface<E> add(E element) {
 		if (root == null) {
 			root = new Node(element);
 		} else {
 			root.insert(root, element);
 		}
+		return this;
 	}
 
 	public void printTree() {
@@ -163,9 +164,9 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
   A copy of the input node is added to the tree.
   */
 
- 	public void remove(E element) {
+ 	public BinaryTreeInterface<E> remove(E element) {
 		if (root == null) {
-			return;
+			return this;
 		}
 		if (root.data == element) {
 			Node temp = new Node();
@@ -175,6 +176,7 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 		} else {
 			root.remove(null, element);
 		}
+		return this;
 	}
   /*
   @postcondition

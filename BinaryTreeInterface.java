@@ -21,13 +21,13 @@ public interface BinaryTreeInterface<E extends Comparable<E>> {
     POST- the tree is reset and all the nodes are removed.
 
   */
-  public void add(E element);
+  public BinaryTreeInterface<E> add(E element);
   /*
   @postcondition
   A copy of the input node is added to the tree.
   */
 
-  public void remove(E element);
+  public BinaryTreeInterface<E> remove(E element);
   /*
   @postcondition
   The node with the input element is removed.
@@ -48,7 +48,7 @@ public interface BinaryTreeInterface<E extends Comparable<E>> {
   This object of the type Iterator<E> was subsequently
   returned.
   **/
-/*
+
   public Iterator<E> descendingIterator();
   /**
   @postcondition
