@@ -129,11 +129,6 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 		this.root = null;
 	}
 
-  	private Node copyTree(Node root) {
-		if(root == null) return null;
-		return new Node(root.right, root.left, root.parent, root.data);
-  	}
-
 	public BinaryTreeInterface<E> add(E element) {
 		if (root == null) {
 			root = new Node(element);
@@ -147,23 +142,17 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 	A copy of the input node is added to the tree.
 	*/
 
-	public void printTree() {
-		inorderTreeWalk(root);
-	}
-
-	private void inorderTreeWalk(Node x) {
-		if(x != null) {
-			inorderTreeWalk(x.left);
-			System.out.println(x.data);
-			inorderTreeWalk(x.right);
-		}
-	}
-
 	public BinaryTreeInterface<E> copy() {
 		BinaryTree<E> copyTree = new BinaryTree<E>();
 		copyTree.root = copyTree(this.root);
 		return copyTree;
 	}
+
+
+	private Node copyTree(Node root) {
+		if(root == null) return null;
+		return new Node(root.right, root.left, root.parent, root.data);
+  	}
 
  	public BinaryTreeInterface<E> remove(E element) {
 		if (root == null) {
@@ -217,30 +206,30 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
   	}
 
 	private Node Successor(Node origin) {
-			if(origin == null) {
-		 		return null;
-			}
-			if(origin.right != null) {
-				return treeMinimum(origin.right);
-			}
-			Node temp = origin.parent;
-			if(temp == null || temp.right == null) {
-			 	return temp;
-			}
-			while(origin.data.equals(temp.right.data)) {
-				origin = temp;
-				temp = temp.parent;
-				if(temp == null || temp.right == null) {
-			 		return temp;
-				}
-			}
+		if(origin == null) {
+			return null;
+		}
+		if(origin.right != null) {
+			return treeMinimum(origin.right);
+		}
+		Node temp = origin.parent;
+		if(temp == null || temp.right == null) {
 			return temp;
 		}
-  /*
-  @postcondition
-  the node with the smallest key greater than the key of input node is returned. 
-  Inorder Successor is NULL for the last node in Inoorder traversal.
-  */
+		while(origin.data.equals(temp.right.data)) {
+			origin = temp;
+			temp = temp.parent;
+			if(temp == null || temp.right == null) {
+				return temp;
+			}
+		}
+		return temp;
+	}
+	/*
+	@postcondition
+	the node with the smallest key greater than the key of input node is returned. 
+	Inorder Successor is NULL for the last node in Inoorder traversal.
+	*/
   	private Node Predecessor(Node origin) {
 		if (origin.left != null) {
 			return treeMaximum(origin.left);
@@ -258,32 +247,43 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 		}
 	    	return temp;
 	}
-  /*
-  @postcondition
-  the node with the greatest key smaller than the key of input node is returned. 
-  Inorder predecessor is NULL for the last node in Inoorder traversal.
-  */
+	/*
+	@postcondition
+	the node with the greatest key smaller than the key of input node is returned. 
+	Inorder predecessor is NULL for the last node in Inoorder traversal.
+	*/
   	public Iterator<E> ascendingIterator() {
    		return new BSTIterator(treeMinimum(root), false);
   	}
-  /**
-  @postcondition
-  The data stored in the binary search tree was iterated in
-  monotonically non-decreasing order and was added in this
-  order to an object of the type Iterator<E>.
-  This object of the type Iterator<E> was subsequently
-  returned.
-  **/
+	/**
+	 @postcondition
+	The data stored in the binary search tree was iterated in
+	monotonically non-decreasing order and was added in this
+	order to an object of the type Iterator<E>.
+	This object of the type Iterator<E> was subsequently
+	returned.
+	**/
 
 	public Iterator<E> descendingIterator() {
 		return new BSTIterator(treeMaximum(root), true);
 	}
-  /**
-  @postcondition
-  The data stored in the binary search tree was iterated in
-  monotonically non-increasing order and was added in this
-  order to an object of the type Iterator<E>.
-  This object of the type Iterator<E> was subsequently
-  returned.
-  **/
+	/**
+	 @postcondition
+	The data stored in the binary search tree was iterated in
+	monotonically non-increasing order and was added in this
+	order to an object of the type Iterator<E>.
+	This object of the type Iterator<E> was subsequently
+	returned.
+	**/
+  	public void printTree() {
+		inorderTreeWalk(root);
+	}
+
+	private void inorderTreeWalk(Node x) {
+		if(x != null) {
+			inorderTreeWalk(x.left);
+			System.out.println(x.data);
+			inorderTreeWalk(x.right);
+		}
+	}
 }
