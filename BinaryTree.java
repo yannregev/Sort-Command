@@ -122,8 +122,12 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
   	private Node root;
 
   	public BinaryTree() {
-    		root = null;
-  	}
+    		this.root = null;
+	}
+	
+	public init() {
+		this.root = null;
+	}
 
   	private Node copyTree(Node root) {
 		if(root == null) return null;
