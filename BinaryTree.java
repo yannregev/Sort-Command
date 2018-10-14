@@ -85,10 +85,9 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 
   	private class BSTIterator implements Iterator<E> {
 		boolean descending;
-    		Node startNode;
     		Node next;
     		public BSTIterator(Node position,boolean desc) {
-      			this.next = startNode = new Node(position);
+      			this.next = new Node(position);
 			this.descending = desc;
     		}
 
