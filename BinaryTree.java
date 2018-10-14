@@ -1,12 +1,11 @@
 import java.util.Iterator;
-import java.lang.reflect.Constructor;
 
 public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<E> {
 
 	private class Node {
-		private Node left;
-		private Node right;
-		private Node parent;
+		private Node left,
+			right,
+			parent;
 		private E data;
 
 		public Node() {
@@ -24,7 +23,8 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 		      	this.right = r; 
 		      	this.parent = p;
 		      	this.data = k;
-	    	}
+		    }
+		
 	    	public Node(Node copyNode) {
 	      		this.left = copyNode.left;
 		      	this.right = copyNode.right; 
@@ -59,7 +59,7 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 		}
     
 		public void insert(Node p, E element) {
-			if (data.compareTo(element) < 0) {
+			if (data.compareTo(element) <= 0) {
 				if (this.right == null) {
 		  			this.right = new Node(null, null, p, element);
 				} else {
@@ -125,18 +125,10 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
   	public BinaryTree() {
     		root = null;
   	}
-  	public BinaryTree(BinaryTree<E> tree) {
-    		copyTree(root, tree.root);
-  	}
 
-  	private void copyTree(Node root, Node other) {
-    		root = new Node(other);
-    		if(other.left != null) {
-      			copyTree(root.left, other.left);
-    		}
-    		if(other.right != null) {
-      			copyTree(root.right, other.right);
-    		}
+  	private Node copyTree(Node root) {
+		if(root == null) return null;
+		return new Node(root.right, root.left, root.parent, root.data);
   	}
 
 	public BinaryTreeInterface<E> add(E element) {
@@ -147,6 +139,10 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 		}
 		return this;
 	}
+	/*
+	@postcondition
+	A copy of the input node is added to the tree.
+	*/
 
 	public void printTree() {
 		inorderTreeWalk(root);
@@ -159,10 +155,12 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 			inorderTreeWalk(x.right);
 		}
 	}
-  /*
-  @postcondition
-  A copy of the input node is added to the tree.
-  */
+
+	public BinaryTreeInterface<E> copy() {
+		BinaryTree<E> copyTree = new BinaryTree<E>();
+		copyTree.root = copyTree(this.root);
+		return copyTree;
+	}
 
  	public BinaryTreeInterface<E> remove(E element) {
 		if (root == null) {
@@ -178,45 +176,44 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 		}
 		return this;
 	}
-  /*
-  @postcondition
-  The node with the input element is removed.
-  */
+	/*
+	@postcondition
+	The node with the input element is removed.
+	*/
 
-	public E get(E element) {
-		try {
-			Class<?> clazz = element.getClass();
-			Constructor<?> copyConst = clazz.getConstructor(clazz);
-			if (clazz != null) {
-				@SuppressWarnings("unchecked")
-				E temp = (E) copyConst.newInstance(element);
-				return temp;
+	public boolean find(E element) {
+		Node temp = root;
+		while(temp != null) {
+			if(temp.compareTo(element) == 0) {
+				return true;
+			} else if(temp.compareTo(element) < 0) {
+				temp = temp.right;
+			} else {
+				temp = temp.left;
 			}
-		} catch (Exception e) {
-			return null;
 		}
-		return null;
+		return false;
 	}
-  /*
-  @postcondition
-  A copy of the element is returned if it exists. Otherwise null is returned.
-  */
+	/*
+	@postcondition
+	true  is returned if it exists. Otherwise false is returned.
+	*/
 
-  	public Node treeMaximum(Node element) {
+  	private Node treeMaximum(Node element) {
     		while(element.right != null) {
         		element = element.right;
     		}
     		return element;
   	}
 
-  	public Node treeMinimum(Node element) {
+  	private Node treeMinimum(Node element) {
     		while(element.left != null) {
         		element = element.left;
     		}
     		return element;
   	}
 
-	public Node Successor(Node origin) {
+	private Node Successor(Node origin) {
 			if(origin == null) {
 		 		return null;
 			}
@@ -241,7 +238,7 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
   the node with the smallest key greater than the key of input node is returned. 
   Inorder Successor is NULL for the last node in Inoorder traversal.
   */
-  	public Node Predecessor(Node origin) {
+  	private Node Predecessor(Node origin) {
 		if (origin.left != null) {
 			return treeMaximum(origin.left);
 		}
@@ -275,9 +272,9 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
   returned.
   **/
 
-  public Iterator<E> descendingIterator() {
-    	return new BSTIterator(treeMaximum(root), true);
-  }
+	public Iterator<E> descendingIterator() {
+		return new BSTIterator(treeMaximum(root), true);
+	}
   /**
   @postcondition
   The data stored in the binary search tree was iterated in

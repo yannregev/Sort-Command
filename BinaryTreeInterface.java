@@ -33,10 +33,10 @@ public interface BinaryTreeInterface<E extends Comparable<E>> {
   The node with the input element is removed.
   */
 
-  public E get(E element);
+  public boolean find(E element);
   /*
   @postcondition
-  A copy of the element is returned if it exists. Otherwise null is returned.
+  true  is returned if it exists. Otherwise false is returned.
   */
 
   public Iterator<E> ascendingIterator();
@@ -58,4 +58,18 @@ public interface BinaryTreeInterface<E extends Comparable<E>> {
   This object of the type Iterator<E> was subsequently
   returned.
   **/
+
+  public void printTree();
+   /**
+  @postcondition
+  The tree is printed inorder.
+  **/
+
+  public BinaryTreeInterface<E> copy();
+  /**
+   * @precondition -
+   * @postcondition A copy of the binary tree has been returned.
+   */
+
+
 }
