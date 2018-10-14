@@ -10,12 +10,15 @@ public interface BinaryTreeInterface<E extends Comparable<E>> {
 	PRE -
 	POST- A new binary tree object is created and the tree is empty
 
+	public BinaryTree(E data);
+	PRE -
+	POST- A new binary tree object is created and the tree root has the data of type E
 
 	public Init();
 	PRE - 
 	POST- the tree is reset and all the nodes are removed.
-
 	*/
+	
 	public BinaryTreeInterface<E> add(E element);
 	/*
 	@postcondition
