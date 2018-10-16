@@ -3,7 +3,6 @@ import java.io.*;
 import java.util.regex.Pattern;
 
 public class Main {
-	static final int SET_SIZE = 2, NUMBER_OF_FILES = 2;
 	static PrintStream out;
 	boolean caseInsensitive = false, descending = false;
 
@@ -80,11 +79,7 @@ public class Main {
 			}
 		}
 
-		if(files.size() != NUMBER_OF_FILES) {
-			out.println("Usage: java Main -args file1 file2");
-			return;
-		}
-		for (int i = 0; i < NUMBER_OF_FILES; i++) {
+		for (int i = 0; i < files.size(); i++) {
 			File file = new File(files.get(i));
 			if (!file.exists()) {
 				out.println(files.get(i) + " no such file");
@@ -93,7 +88,7 @@ public class Main {
 			sets.add(new Set());
 		}
 		Map<String, Integer> occurence = new HashMap<String, Integer>();
-		for (int i = 0; i < NUMBER_OF_FILES; i++) {
+		for (int i = 0; i < files.size(); i++) {
 			readFile(files.get(i), sets.get(i), occurence);
 		}
 		sortAndPrint(occurence);
