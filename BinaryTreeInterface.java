@@ -68,5 +68,9 @@ public interface BinaryTreeInterface<E extends Comparable<E>> {
 	 * @postcondition A copy of the binary tree has been returned.
 	 */
 
+	public E minNode();
+
+	public E maxNode();
+
 
 }

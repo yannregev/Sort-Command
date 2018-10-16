@@ -129,7 +129,7 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 		this.root = new Node(null, null, null, data);
     	}
 	
-	public init() {
+	public void init() {
 		this.root = null;
 	}
 
@@ -194,6 +194,15 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 	@postcondition
 	true  is returned if it exists. Otherwise false is returned.
 	*/
+
+	public E minNode() {
+		return (treeMinimum(this.root) == null) ? null : treeMinimum(this.root).data;
+	}
+
+
+	public E maxNode() {
+		return (treeMaximum(this.root) == null) ? null : treeMaximum(this.root).data;
+	}
 
   	private Node treeMaximum(Node element) {
     		while(element.right != null) {
