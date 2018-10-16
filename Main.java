@@ -39,13 +39,13 @@ public class Main {
 	}
 
 	void sortAndPrint(Map<String, Integer> occurence) {
-		BinaryTreeInterface<Identifier> tree = new BinaryTree<Identifier>();
+		BinaryTreeInterface<String> tree = new BinaryTree<String>();
 		for (String s : occurence.keySet()) {
 			if((occurence.get(s) % 2) != 0) {
-				tree.add(new Identifier(new StringBuffer(s)));
+				tree.add(s);
 			}
 		}
-		Iterator<Identifier> meIter;
+		Iterator<String> meIter;
 		if (!descending) {
 			meIter = tree.ascendingIterator();
 		} else {

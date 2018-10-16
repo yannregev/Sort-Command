@@ -48,7 +48,7 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 				}
 			} else {
 				if (left != null && right != null) {
-					this.data = right.minData();
+					this.data = (treeMinimum(right) == null) ? null : treeMinimum(right).data;
 					right.remove(this, this.data);
 				} else if (parent.left == this) {
 					parent.left = (left != null) ? left : right;
@@ -72,14 +72,6 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 					left.insert(left, element);
 				}
 			} 
-		}
-
-		public E minData() {
-			if (left == null) {
-				return data;
-			} else {
-				return left.minData();
-			}
 		}
 	};
 
@@ -155,7 +147,10 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 
 	private Node copyTree(Node root) {
 		if(root == null) return null;
-		return new Node(root.right, root.left, root.parent, root.data);
+		Node temp =  new Node(copyTree(root.right), copyTree(root.left), null, root.data);
+		if(temp.left != null) temp.left.parent = temp;
+		if(temp.right != null) temp.right.parent = temp;
+		return temp;
   	}
 
  	public BinaryTreeInterface<E> remove(E element) {

@@ -14,7 +14,7 @@ public interface BinaryTreeInterface<E extends Comparable<E>> {
 	PRE -
 	POST- A new binary tree object is created and the tree root has the data of type E
 
-	public Init();
+	public void Init();
 	PRE - 
 	POST- the tree is reset and all the nodes are removed.
 	*/
@@ -70,7 +70,17 @@ public interface BinaryTreeInterface<E extends Comparable<E>> {
 
 	public E minNode();
 
+	/**
+	 * @precondition -
+	 * @postcondition if the tree is empty null is returned, otherwise the lowest value in the tree is returned.
+	 */
+
 	public E maxNode();
+	/**
+	 * @precondition -
+	 * @postcondition if the tree is empty null is returned, otherwise the highest value in the tree is returned.
+	 */
+
 
 
 }
