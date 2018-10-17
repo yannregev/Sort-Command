@@ -2,30 +2,38 @@ import java.util.*;
 
 public class Identifier implements IdentInterface, Comparable<Identifier>{
 	private StringBuffer element;
+
 	public Identifier(char c) {
-		this.element = new StringBuffer();
-		element.append(c);
+	  	this.element = new StringBuffer(c+"");
 	}
+
 	public Identifier(StringBuffer element) {
-	  this.element = new StringBuffer(element);
+	  	this.element = new StringBuffer(element);
 	}
 
 	public Identifier(Identifier ide) {
-	  this.element = new StringBuffer(ide.element);
+	  	this.element = new StringBuffer(ide.element);
 	}
 
-	public void init(char c) {
-		this.element = new StringBuffer(c);
+	@Override
+	public IdentInterface init(char c) {
+		this.element = new StringBuffer(c+"");
+		return this;
 	}
 
-	public void setValue(StringBuffer element) {
+	@Override
+	public IdentInterface setValue(StringBuffer element) {
 		this.element = new StringBuffer(element);
+		return this;
 	}
 
-	public void append(char c) {
+	@Override
+	public IdentInterface append(char c) {
 		this.element.append(c);
+		return this;
 	}
 
+	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) {
 			return false;
@@ -40,15 +48,17 @@ public class Identifier implements IdentInterface, Comparable<Identifier>{
 		return i.element.toString().equals(this.element.toString());
 	}
 
-	public String toString() {
-		return element.toString();
-	}
-
-	public int hashCode() {
-		return element.toString().hashCode();
-	}
-
 	public int compareTo(Identifier rhs) {
 		return (this.element.toString().compareTo(rhs.element.toString()));
+	}
+
+	@Override
+	public int hashCode() {
+		return this.toString().hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return element.toString();
 	}
 }

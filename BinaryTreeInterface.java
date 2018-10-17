@@ -14,11 +14,14 @@ public interface BinaryTreeInterface<E extends Comparable<E>> {
 	PRE -
 	POST- A new binary tree object is created and the tree root has the data of type E
 
-	public void Init();
-	PRE - 
-	POST- the tree is reset and all the nodes are removed.
 	*/
-	
+
+	public BinaryTreeInterface<E> init();
+	/*
+	@postcondition
+ 	the tree is reset and all the nodes are removed.	
+	*/
+
 	public BinaryTreeInterface<E> add(E element);
 	/*
 	@postcondition
@@ -54,12 +57,6 @@ public interface BinaryTreeInterface<E extends Comparable<E>> {
 	order to an object of the type Iterator<E>.
 	This object of the type Iterator<E> was subsequently
 	returned. 
-	**/
-
-	public void printTree();
-	/**
-	 @postcondition
-	The tree is printed inorder.
 	**/
 
 	public BinaryTreeInterface<E> copy();

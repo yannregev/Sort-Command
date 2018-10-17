@@ -36,12 +36,13 @@ public interface SetInterface {
 	public int getSize();
 	/*
 		PRE -
-		POST-
+		POST- The size of the set is returned
 	*/	
 	public boolean contains(Identifier otherIdentifer);
 	/*
 		PRE -
-		POST-
+		POST- TRUE: the element exists in the setInterface object
+			FALSE: the element does not exist in the setInterface object
 	*/
 	public Set intersection(Set s);
 	/*

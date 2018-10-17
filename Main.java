@@ -11,7 +11,7 @@ public class Main {
 	}
 
 
-	void readFile(String s, Set set, Map<String, Integer> occurence) throws Exception {
+	void readFile(String s, Set set, Map<Identifier, Integer> occurence) throws Exception {
 		Scanner in = new Scanner(new File(s));
 		while (in.hasNextLine()) {
 			String input = in.nextLine();
@@ -23,28 +23,28 @@ public class Main {
 			String[] parsedInput = input.split(" ");
 			for (int i = 0; i < parsedInput.length; i++) {
 				if (startsWithLetter(parsedInput[i])) {
-					set.append(new Identifier(new StringBuffer(parsedInput[i])));
-					if(occurence.get(parsedInput[i]) == null) {
-						occurence.put(parsedInput[i], 0);
+					Identifier identifier = new Identifier(new StringBuffer(parsedInput[i]));
+					set.append(identifier);
+					if(occurence.get(identifier) == null) {
+						occurence.put(identifier, 0);
 					}
-					int apearences = occurence.get(parsedInput[i]);
-					occurence.put(parsedInput[i], apearences + 1);
+					int apearences = occurence.get(identifier);
+					occurence.put(identifier, apearences + 1);
 				}
 			}
 		}
-		//out.println("The set is " + set);
 		in.close();
-
 	}
 
-	void sortAndPrint(Map<String, Integer> occurence) {
-		BinaryTreeInterface<String> tree = new BinaryTree<String>();
-		for (String s : occurence.keySet()) {
+	void sortAndPrint(Map<Identifier, Integer> occurence) {
+		BinaryTreeInterface<Identifier> tree = new BinaryTree<Identifier>();
+		for (Identifier s : occurence.keySet()) {
+	
 			if((occurence.get(s) % 2) != 0) {
 				tree.add(s);
 			}
 		}
-		Iterator<String> meIter;
+		Iterator<Identifier> meIter;
 		if (!descending) {
 			meIter = tree.ascendingIterator();
 		} else {
@@ -59,13 +59,9 @@ public class Main {
 	void start(String[] args) throws Exception {
 		Vector<Set> sets = new Vector<Set>();
 		Vector<String> files = new Vector<String>();
+		
 
-		out = new PrintStream(System.out);
-
-
-
-		for (int i = 0; i < args.length; i++) {
-			
+		for (int i = 0; i < args.length; i++) {	
 			switch(args[i]) {
 				case "-i":
 					caseInsensitive = true;
@@ -82,24 +78,23 @@ public class Main {
 		for (int i = 0; i < files.size(); i++) {
 			File file = new File(files.get(i));
 			if (!file.exists()) {
-				out.println(files.get(i) + " no such file");
-				return;
+				throw new Exception(files.get(i) + " no such file");
 			}
 			sets.add(new Set());
 		}
-		Map<String, Integer> occurence = new HashMap<String, Integer>();
+		Map<Identifier, Integer> occurence = new HashMap<Identifier, Integer>();
 		for (int i = 0; i < files.size(); i++) {
 			readFile(files.get(i), sets.get(i), occurence);
 		}
 		sortAndPrint(occurence);
-
 	}
 
 	public static void main(String[] args) {
+		out = new PrintStream(System.out);
 		try {
 			new Main().start(args);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			out.printf("error %s \n",e.getMessage());
 		}	
 	}
 }

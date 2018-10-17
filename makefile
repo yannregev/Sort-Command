@@ -10,7 +10,7 @@ CLASSES = \
 	Identifier.java \
 	SetInterface.java \
 	IdentInterface.java \
-	BinaryTreeInterface.java\
+	BinaryTreeInterface.java \
 	BinaryTree.java
 
 

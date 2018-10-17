@@ -1,6 +1,6 @@
 import java.util.Iterator;
 
-public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<E> {
+public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<E>, Iterable<E> {
 
 	private class Node {
 		private Node left,
@@ -13,9 +13,7 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 		}
 
 		public Node(E d) {
-			this.left = null;
-			this.right = null; 
-			this.parent = null;
+			this.left = this.right = this.parent = null;
 			this.data = d;
 		}
 	    	public Node(Node r, Node l, Node p, E k) {
@@ -26,10 +24,7 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 		    }
 		
 	    	public Node(Node copyNode) {
-	      		this.left = copyNode.left;
-		      	this.right = copyNode.right; 
-		      	this.parent = copyNode.parent;
-		      	this.data = copyNode.data;
+			this(copyNode.right, copyNode.left, copyNode.parent, copyNode.data);
 	    	}
 	    
 	    	public int compareTo(E otherData) {
@@ -78,8 +73,9 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
   	private class BSTIterator implements Iterator<E> {
 		boolean descending;
     		Node next;
-    		public BSTIterator(Node position,boolean desc) {
-      			this.next = new Node(position);
+    		public BSTIterator(Node position, boolean desc) {
+			
+      			this.next = position == null ? null : new Node(position);
 			this.descending = desc;
     		}
 
@@ -95,7 +91,6 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 					return null;
 				}
 				Node temp = new Node(next);
-				
 				this.next = Successor(temp) == null ? null : new Node(Successor(temp));
 				return temp.data;
 			} else {
@@ -103,7 +98,6 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 					return null;
 				}
 				Node temp = new Node(next);
-				
 				this.next = Predecessor(temp) == null ? null : new Node(Predecessor(temp));
 				return temp.data;
 			}
@@ -121,10 +115,12 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 		this.root = new Node(null, null, null, data);
     	}
 	
-	public void init() {
+	public BinaryTreeInterface<E> init() {
 		this.root = null;
+		return this;
 	}
 
+	@Override
 	public BinaryTreeInterface<E> add(E element) {
 		if (root == null) {
 			root = new Node(element);
@@ -133,26 +129,29 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 		}
 		return this;
 	}
-	/*
-	@postcondition
-	A copy of the input node is added to the tree.
-	*/
 
+	@Override
 	public BinaryTreeInterface<E> copy() {
 		BinaryTree<E> copyTree = new BinaryTree<E>();
 		copyTree.root = copyTree(this.root);
 		return copyTree;
 	}
 
-
 	private Node copyTree(Node root) {
-		if(root == null) return null;
+		if(root == null) {
+			return null;
+		}
 		Node temp =  new Node(copyTree(root.right), copyTree(root.left), null, root.data);
-		if(temp.left != null) temp.left.parent = temp;
-		if(temp.right != null) temp.right.parent = temp;
+		if(temp.left != null) {
+			temp.left.parent = temp;
+		}
+		if(temp.right != null) { 
+			temp.right.parent = temp;
+		}
 		return temp;
   	}
 
+	@Override
  	public BinaryTreeInterface<E> remove(E element) {
 		if (root == null) {
 			return this;
@@ -167,11 +166,8 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 		}
 		return this;
 	}
-	/*
-	@postcondition
-	The node with the input element is removed.
-	*/
 
+	@Override
 	public boolean find(E element) {
 		Node temp = root;
 		while(temp != null) {
@@ -185,21 +181,19 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 		}
 		return false;
 	}
-	/*
-	@postcondition
-	true  is returned if it exists. Otherwise false is returned.
-	*/
 
+	@Override
 	public E minNode() {
-		return (treeMinimum(this.root) == null) ? null : treeMinimum(this.root).data;
+		return treeMinimum(this.root) == null ? null : treeMinimum(this.root).data;
 	}
 
-
+	@Override
 	public E maxNode() {
-		return (treeMaximum(this.root) == null) ? null : treeMaximum(this.root).data;
+		return treeMaximum(this.root) == null ? null : treeMaximum(this.root).data;
 	}
 
   	private Node treeMaximum(Node element) {
+		if (element == null) return null;
     		while(element.right != null) {
         		element = element.right;
     		}
@@ -207,6 +201,7 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
   	}
 
   	private Node treeMinimum(Node element) {
+		if (element == null) return null;
     		while(element.left != null) {
         		element = element.left;
     		}
@@ -233,11 +228,7 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 		}
 		return temp;
 	}
-	/*
-	@postcondition
-	the node with the smallest key greater than the key of input node is returned. 
-	Inorder Successor is NULL for the last node in Inoorder traversal.
-	*/
+
   	private Node Predecessor(Node origin) {
 		if (origin.left != null) {
 			return treeMaximum(origin.left);
@@ -255,43 +246,19 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 		}
 	    	return temp;
 	}
-	/*
-	@postcondition
-	the node with the greatest key smaller than the key of input node is returned. 
-	Inorder predecessor is NULL for the last node in Inoorder traversal.
-	*/
+
+	@Override
   	public Iterator<E> ascendingIterator() {
    		return new BSTIterator(treeMinimum(root), false);
   	}
-	/**
-	 @postcondition
-	The data stored in the binary search tree was iterated in
-	monotonically non-decreasing order and was added in this
-	order to an object of the type Iterator<E>.
-	This object of the type Iterator<E> was subsequently
-	returned.
-	**/
-
+	
+	@Override
 	public Iterator<E> descendingIterator() {
 		return new BSTIterator(treeMaximum(root), true);
 	}
-	/**
-	 @postcondition
-	The data stored in the binary search tree was iterated in
-	monotonically non-increasing order and was added in this
-	order to an object of the type Iterator<E>.
-	This object of the type Iterator<E> was subsequently
-	returned.
-	**/
-  	public void printTree() {
-		inorderTreeWalk(root);
-	}
 
-	private void inorderTreeWalk(Node x) {
-		if(x != null) {
-			inorderTreeWalk(x.left);
-			System.out.println(x.data);
-			inorderTreeWalk(x.right);
-		}
+	@Override
+	public Iterator<E> iterator() {
+		return ascendingIterator();
 	}
 }
