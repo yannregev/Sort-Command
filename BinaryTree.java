@@ -228,6 +228,9 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 		}
 		return temp;
 	}
+	/* 
+	@postcondition - the node with the smallest key greater than the key of input node is returned
+	*/
 
   	private Node Predecessor(Node origin) {
 		if (origin.left != null) {
@@ -246,6 +249,10 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 		}
 	    	return temp;
 	}
+	/* 
+	@postcondition - the node with the greatest key smaller than the key of input node is returned
+	*/
+
 
 	@Override
   	public Iterator<E> ascendingIterator() {
@@ -261,4 +268,7 @@ public class BinaryTree<E extends Comparable<E>> implements BinaryTreeInterface<
 	public Iterator<E> iterator() {
 		return ascendingIterator();
 	}
+	/*
+	@postcondition - the ascending iterator is returned
+	*/
 }
