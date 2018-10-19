@@ -44,22 +44,22 @@ public interface SetInterface {
 		POST- TRUE: the element exists in the setInterface object
 			FALSE: the element does not exist in the setInterface object
 	*/
-	public Set intersection(Set s);
+	public SetInterface intersection(SetInterface s);
 	/*
 		PRE -
 		POST- A new Set is created and the value is the intersection of of the two sets
 	*/
-	public Set difference(Set s);
+	public SetInterface difference(SetInterface s);
 	/*
 		PRE -
 		POST- A new Set is created and the value is the difference of of the two sets
 	*/
-	public Set union(Set s);
+	public SetInterface union(SetInterface s);
 	/*
 		PRE -
 		POST- A new Set is created and the value is the union of of the two sets
 	*/
-	public Set symmetricDifference(Set s);
+	public SetInterface symmetricDifference(SetInterface s);
 	/*
 		PRE -
 		POST- A new Set is created and the value is the symmetric difference of of the two sets

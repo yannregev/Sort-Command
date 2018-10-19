@@ -53,8 +53,8 @@ public class Set implements SetInterface {
 		identifiers = temp;
 	}
 
-	public Set intersection(Set s) {
-		Set intersectionSet = new Set();
+	public SetInterface intersection(SetInterface s) {
+		SetInterface intersectionSet = new Set();
 		for(int i = 0; i < this.size; i++) {
 		    if(s.contains(this.identifiers[i])) {
 		        intersectionSet.append(this.identifiers[i]);
@@ -63,8 +63,8 @@ public class Set implements SetInterface {
 		return intersectionSet;
 	}
 
-	public Set difference(Set s) {
-		Set differenceSet = new Set();
+	public SetInterface difference(SetInterface s) {
+		SetInterface differenceSet = new Set();
 		for(int i = 0; i < this.size; i++) {
 		    if(!s.contains(this.identifiers[i])) {
 		        differenceSet.append(this.identifiers[i]);
@@ -73,8 +73,9 @@ public class Set implements SetInterface {
 		return differenceSet;
 	}
     
-    	public Set union(Set s) {
+    	public SetInterface union(SetInterface set) {
         	Set unionSet = new Set();
+		Set s = (Set)set;
 		unionSet.clone(s);
 		for(int i = 0; i < this.size; i++) {
 			if(!unionSet.contains(this.identifiers[i])) {
@@ -84,15 +85,16 @@ public class Set implements SetInterface {
 		return unionSet;
     	}
     
-	public Set symmetricDifference(Set s) {
-		Set unionSet = intersection(s);
-		Set symmDiff = new Set();
+	public SetInterface symmetricDifference(SetInterface set) {
+		SetInterface unionSet = intersection(set);
+		SetInterface symmDiff = new Set();
 		for(int i = 0; i < this.size; i++) {
 			if(!unionSet.contains(this.identifiers[i])) {
 				symmDiff.append(this.identifiers[i]);
 			}
 		}
-		for(int i = 0; i < s.size; i++) {
+		Set s = (Set)set;
+		for(int i = 0; i < s.getSize(); i++) {
 			if(!unionSet.contains(s.identifiers[i])) {
 				symmDiff.append(s.identifiers[i]);
 			}

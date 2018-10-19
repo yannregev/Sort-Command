@@ -3,7 +3,7 @@ import java.io.*;
 import java.util.regex.Pattern;
 
 public class Main {
-	static PrintStream out;
+	PrintStream out;
 	boolean caseInsensitive = false, descending = false;
 
 	boolean startsWithLetter(String s) {
@@ -39,7 +39,6 @@ public class Main {
 	void sortAndPrint(Map<Identifier, Integer> occurence) {
 		BinaryTreeInterface<Identifier> tree = new BinaryTree<Identifier>();
 		for (Identifier s : occurence.keySet()) {
-	
 			if((occurence.get(s) % 2) != 0) {
 				tree.add(s);
 			}
@@ -59,7 +58,7 @@ public class Main {
 	void start(String[] args) throws Exception {
 		Vector<Set> sets = new Vector<Set>();
 		Vector<String> files = new Vector<String>();
-		
+		out = new PrintStream(System.out);
 
 		for (int i = 0; i < args.length; i++) {	
 			switch(args[i]) {
@@ -83,6 +82,7 @@ public class Main {
 			sets.add(new Set());
 		}
 		Map<Identifier, Integer> occurence = new HashMap<Identifier, Integer>();
+
 		for (int i = 0; i < files.size(); i++) {
 			readFile(files.get(i), sets.get(i), occurence);
 		}
@@ -90,11 +90,11 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		out = new PrintStream(System.out);
+		
 		try {
 			new Main().start(args);
 		} catch (Exception e) {
-			out.printf("error %s \n",e.getMessage());
+			System.out.printf("error %s \n",e.getMessage());
 		}	
 	}
 }
